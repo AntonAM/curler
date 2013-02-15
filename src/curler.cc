@@ -124,20 +124,19 @@ class Curler: ObjectWrap
 			//set callback function
 			rtd->cb = Persistent<Function>::New(cb);
 
-			eio_custom((void (*)(eio_req*))RequestWorker, EIO_PRI_DEFAULT, RequestComplete, rtd);
-			ev_ref(EV_DEFAULT_UC);
+			uv_work_t *_req = new uv_work_t; 
+    		_req->data = rtd; 
+    		uv_queue_work(uv_default_loop(), _req, RequestWorker, RequestComplete);
 
 			return scope.Close(Undefined());
 		}
 
-		static int RequestWorker (eio_req *req) {
+		static void RequestWorker (uv_work_t *req) {
 			request_thread_data *rtd = static_cast<request_thread_data *> (req->data);
 
 			CurlClient* curlClient = new CurlClient();
 			rtd->response = curlClient->Request(rtd->request);
 			delete curlClient;
-
-			return 0;
 		}
 
 		/**************************************************************************//**
@@ -145,9 +144,9 @@ class Curler: ObjectWrap
 		*
 		* @param request_thread_data
 		*****************************************************************************/
-		static int RequestComplete (eio_req *req) {
+		static void RequestComplete (uv_work_t *req) {
 			request_thread_data *rtd = static_cast<request_thread_data *> (req->data);
-			ev_unref(EV_DEFAULT_UC);
+			delete req;
 
 			Local<Value> argv[3];
 			argv[0] = Local<Value>::New(Null());
@@ -188,8 +187,6 @@ class Curler: ObjectWrap
 			//peanut butter clean up time
 			rtd->cb.Dispose();
 			delete rtd;
-
-			return 0;
 		}
 	private:
 		static bool HasField(Handle<Object> source, const char* fieldName)  {
@@ -214,7 +211,6 @@ Persistent<FunctionTemplate> Curler::s_ct;
 extern "C" {
 	static void init (Handle<Object> target)
 	{
-		eio_set_min_parallel(25);
 		Curler::Init(target);
 	}
 
