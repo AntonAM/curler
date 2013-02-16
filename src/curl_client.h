@@ -16,6 +16,7 @@ typedef struct {
 	string bodyData;
 	long timeout;
 	long connectionTimeout;
+	int maxRedirects;
 } curl_request;
 
 typedef struct {

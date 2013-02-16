@@ -113,6 +113,12 @@ class Curler: ObjectWrap
 				request.bodyData = *String::Utf8Value(options->Get(String::New("data")));
 			}
 
+			//follow redirects
+			request.maxRedirects = 0;
+			if (options->Has(String::New("maxRedirects"))) {
+				request.maxRedirects = options->Get(String::New("maxRedirects"))->IntegerValue();
+			}
+
 			//timeout
 			request.timeout = 0;
 			if (options->Has(String::New("timeout"))) {

@@ -38,6 +38,11 @@ curl_response CurlClient::Request(curl_request request) {
 		curl_easy_setopt(curl_handle, CURLOPT_CONNECTTIMEOUT_MS, request.connectionTimeout);
 	}
 
+	if(request.maxRedirects != 0) {
+		curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION, 1);
+		curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS, request.maxRedirects);
+	}
+
 	/* add custom headers */
 	struct curl_slist *list = NULL;
 	if (request.headers.size() > 0) {
