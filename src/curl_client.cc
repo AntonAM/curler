@@ -5,6 +5,10 @@ CurlClient::CurlClient() {}
 
 CurlClient::~CurlClient() {}
 
+char* CurlClient::Version() {
+	return curl_version();
+}
+
 curl_response CurlClient::Request(curl_request request) {
 	curl_response response;
 

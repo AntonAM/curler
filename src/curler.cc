@@ -23,6 +23,7 @@ class Curler: ObjectWrap
 			s_ct->SetClassName(String::NewSymbol("Curler"));
 
 			NODE_SET_PROTOTYPE_METHOD(s_ct, "request", Request);
+			NODE_SET_PROTOTYPE_METHOD(s_ct, "version", Version);
 
 			target->Set(String::NewSymbol("Curler"), s_ct->GetFunction());
 		}
@@ -39,12 +40,18 @@ class Curler: ObjectWrap
 			return args.This();
 		}
 
-		/* struct for passing our request data around libeio */
+		/* struct for passing our request data around */
 		struct request_thread_data {
 			Persistent<Function> cb;
 			curl_request request;
 			curl_response response;
 		};
+
+		static Handle<Value> Version (const Arguments& args) {
+			CurlClient* curlClient = new CurlClient();
+
+			return String::New(curlClient->Version());
+		}
 
 		/**************************************************************************//**
 		* HTTP request

@@ -32,6 +32,7 @@ typedef struct {
 
 class CurlClient {
  public:
+ 	char* Version();
 	curl_response Request(curl_request request);
  ~CurlClient();
 	CurlClient();
