@@ -97,6 +97,7 @@ curl_response CurlClient::Request(curl_request request) {
 	curl_easy_getinfo(curl_handle, CURLINFO_PRETRANSFER_TIME, &response.preTransferTime); 
 	curl_easy_getinfo(curl_handle, CURLINFO_CONNECT_TIME, &response.connectTime); 
 	curl_easy_getinfo(curl_handle, CURLINFO_STARTTRANSFER_TIME, &response.startTransferTime); 
+	curl_easy_getinfo(curl_handle, CURLINFO_REDIRECT_TIME, &response.redirectTime); 
 
 	/* get status code */
 	response.statusCode = 0;

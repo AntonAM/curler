@@ -185,6 +185,7 @@ class Curler: ObjectWrap
 			result->Set(String::NewSymbol("preTransferTime"), Number::New(rtd->response.preTransferTime));
 			result->Set(String::NewSymbol("startTransferTime"), Number::New(rtd->response.startTransferTime));
 			result->Set(String::NewSymbol("totalTime"), Number::New(rtd->response.totalTime));
+			result->Set(String::NewSymbol("redirectTime"), Number::New(rtd->response.redirectTime));
 			argv[1] = result;
 
 			//response data

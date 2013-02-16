@@ -29,6 +29,7 @@ typedef struct {
 	double preTransferTime;
 	double startTransferTime;
 	double totalTime;
+	double redirectTime;
 } curl_response;
 
 class CurlClient {
