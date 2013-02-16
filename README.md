@@ -15,6 +15,7 @@ A native c++ node.js module for asynchronous http requests via libcurl.
  - `data`: Optional request body data.
  - `timeout`: Total request timeout (connection/response) in milliseconds.
  - `connectionTimeout`: Connection timeout in milliseconds.
+ - `maxRedirects`: if not 0 libcurl will follow up to 'maxRedirects' redirections.
 
 ## Examples
 
@@ -22,6 +23,8 @@ A native c++ node.js module for asynchronous http requests via libcurl.
 ``` js
 var curler = require("curler").Curler;
 var curlClient = new curler();
+
+console.log(curlClient.version());
 
 var options = {
   method: "GET",
@@ -39,7 +42,7 @@ curlClient.request(options, function(err, res, bodyData) {
     console.log('bodyData: %s', bodyData);
   }
 
-  console.log("curler (libcurl) performed http request in %s ms. dnsTime: %s, connectTime: %s, preTransferTime: %s, startTransferTime: %s, totalTime: %s", duration, res.dnsTime, res.connectTime, res.preTransferTime, res.startTransferTime, res.totalTime);
+  console.log("curler (libcurl) performed http request in %s ms. dnsTime: %s, connectTime: %s, preTransferTime: %s, startTransferTime: %s, redirectTime: %s, totalTime: %s", duration, res.dnsTime, res.connectTime, res.preTransferTime, res.startTransferTime, res.redirectTime, res.totalTime);
 });
 ```
 
