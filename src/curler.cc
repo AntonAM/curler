@@ -104,6 +104,22 @@ class Curler: ObjectWrap
 				}
 			}
 
+
+			//custom libcurl options
+			if (HasField(options, "customOpts")) {
+				Local<Object> customOpts = options->Get(String::New("customOpts"))->ToObject();
+				if (customOpts->IsObject()) {
+					Local<Array> keys = customOpts->GetPropertyNames();
+					for (size_t i = 0; i< keys->Length (); ++i) {
+						int key = keys->Get(i)->IntegerValue();
+						int value = customOpts->Get(key)->IntegerValue();
+
+						//add option
+						request.customOpts.insert(pair<int,int>(key, value));
+					}
+				}
+			}
+
 			//body data
 			if (options->Has(String::New("data"))) {
 				if (options->Get(String::New("data"))->IsObject()) {

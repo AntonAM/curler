@@ -13,6 +13,7 @@ typedef struct {
 	string method;
 	string url;
 	map<string, string> headers;
+	map<int,int> customOpts;
 	string bodyData;
 	long timeout;
 	long connectionTimeout;

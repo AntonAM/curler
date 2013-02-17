@@ -38,6 +38,7 @@ curl_response CurlClient::Request(curl_request request) {
 		curl_easy_setopt(curl_handle, CURLOPT_CONNECTTIMEOUT_MS, request.connectionTimeout);
 	}
 
+	/* redirects processing */
 	if(request.maxRedirects != 0) {
 		curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION, 1);
 		curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS, request.maxRedirects);
@@ -50,6 +51,14 @@ curl_response CurlClient::Request(curl_request request) {
 		for(it_type iterator = request.headers.begin(); iterator != request.headers.end(); iterator++) {
 			string header = iterator->first + ": " + iterator->second;
 			list = curl_slist_append(list, header.c_str());
+		}
+	}
+
+	/* add custom libcurl options */
+	if (request.customOpts.size() > 0) {
+		typedef std::map<int, int>::iterator it2_type;
+		for(it2_type iterator = request.customOpts.begin(); iterator != request.customOpts.end(); iterator++) {
+			curl_easy_setopt(curl_handle, CURLoption(iterator->first), iterator->second);
 		}
 	}
 	

@@ -12,6 +12,7 @@ A native c++ node.js module for asynchronous http requests via libcurl.
  - `url`: request url. (required)
  - `method`: HTTP method type. Defaults to `GET`. (can be anything)
  - `headers`: Optional JSON key/value array of the request headers.
+ - `customOpts`: custom options (CURLOPT_*) for libcurl. See code exmple below.
  - `data`: Optional request body data.
  - `timeout`: Total request timeout (connection/response) in milliseconds.
  - `connectionTimeout`: Connection timeout in milliseconds.
@@ -23,12 +24,19 @@ A native c++ node.js module for asynchronous http requests via libcurl.
 ``` js
 var curler = require("curler").Curler;
 var curlClient = new curler();
+var CURLOPT_HEADER = 42;  //* From 'curl.h'
+
 
 console.log(curlClient.version());
 
+var custom = {};
+custom[CURLOPT_HEADER] = 1; //* Show result headers.
+
 var options = {
   method: "GET",
-  url: 'http://www.google.com'
+  url: 'http://www.google.com',
+  maxRedirects: 5,
+  customOpts: custom
 };
 
 var startDate = Date.now();
