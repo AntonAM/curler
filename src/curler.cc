@@ -174,6 +174,7 @@ class Curler: ObjectWrap
 		* @param request_thread_data
 		*****************************************************************************/
 		static void RequestComplete (uv_work_t *req) {
+			HandleScope scope;
 			request_thread_data *rtd = static_cast<request_thread_data *> (req->data);
 			delete req;
 
